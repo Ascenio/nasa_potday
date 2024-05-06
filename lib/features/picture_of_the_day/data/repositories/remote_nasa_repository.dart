@@ -16,15 +16,22 @@ class RemoteNasaRepository implements NasaRepository {
   final String apiKey;
 
   @override
-  Future<PictureEntity?> loadPictureOfTheDay() async {
+  Future<List<PictureEntity>> loadPictureOfTheDay() async {
+    final startDate = DateTime.now()
+        .subtract(const Duration(days: 30))
+        .toString()
+        .split(' ')
+        .first;
     try {
-      final uri = Uri.parse('$baseUrl?api_key=$apiKey');
+      final uri = Uri.parse('$baseUrl?api_key=$apiKey&start_date=$startDate');
       final response = await get(uri);
-      final json = jsonDecode(response.body);
-      return PictureModel.fromJson(json);
+      return (jsonDecode(response.body) as List)
+          .cast<Map<String, dynamic>>()
+          .map(PictureModel.fromJson)
+          .toList();
     } catch (error) {
       debugPrint('Could not load picture of the day: $error');
     }
-    return null;
+    return [];
   }
 }

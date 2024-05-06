@@ -17,7 +17,9 @@ class PictureWidget extends StatelessWidget {
             child: Center(child: Text('Video is not implemented yet')),
           ),
         ),
-      false => Image.network(picture.url.toString()),
+      false => Image.network(
+          picture.url.toString(),
+        ),
     };
   }
 }

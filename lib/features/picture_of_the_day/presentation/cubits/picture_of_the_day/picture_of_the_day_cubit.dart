@@ -14,8 +14,8 @@ class PictureOfTheDayCubit extends Cubit<PictureOfTheDayState> {
   Future<void> loadPictureOfTheDay() async {
     emit(const PictureOfTheDayLoading());
     final result = await _nasaRepository.loadPictureOfTheDay();
-    if (result != null) {
-      emit(PictureOfTheDayLoaded(picture: result));
+    if (result.isNotEmpty) {
+      emit(PictureOfTheDayLoaded(pictures: result));
     } else {
       emit(const PictureOfTheDayFailed());
     }

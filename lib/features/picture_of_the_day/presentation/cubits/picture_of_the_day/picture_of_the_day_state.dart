@@ -9,9 +9,9 @@ final class PictureOfTheDayLoading extends PictureOfTheDayState {
 }
 
 final class PictureOfTheDayLoaded extends PictureOfTheDayState {
-  const PictureOfTheDayLoaded({required this.picture});
+  const PictureOfTheDayLoaded({required this.pictures});
 
-  final PictureEntity picture;
+  final List<PictureEntity> pictures;
 }
 
 final class PictureOfTheDayFailed extends PictureOfTheDayState {

@@ -29,7 +29,12 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
         builder: (context, state) {
           return switch (state) {
             PictureOfTheDayLoading() => const LoadingWidget(),
-            PictureOfTheDayLoaded() => PictureWidget(picture: state.picture),
+            PictureOfTheDayLoaded() => ListView.separated(
+                itemBuilder: (_, index) =>
+                    PictureWidget(picture: state.pictures[index]),
+                separatorBuilder: (_, __) => const SizedBox(height: 16),
+                itemCount: state.pictures.length,
+              ),
             PictureOfTheDayFailed() => TryAgainWidget(
                 onTryAgainPressed: () {
                   context.read<PictureOfTheDayCubit>().loadPictureOfTheDay();
