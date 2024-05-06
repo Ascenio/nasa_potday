@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ImageOrVideoWidget extends StatelessWidget {
   const ImageOrVideoWidget({
@@ -12,15 +13,23 @@ class ImageOrVideoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return switch (isVideo) {
-      true => const Placeholder(
-          child: SizedBox.expand(
-            child: Center(child: Text('Video is not implemented yet')),
+    final size = MediaQuery.sizeOf(context);
+    return SizedBox(
+      height: size.height / 3,
+      child: switch (isVideo) {
+        true => const Placeholder(
+            child: SizedBox.expand(
+              child: Center(child: Text('Video is not implemented yet')),
+            ),
           ),
-        ),
-      false => Image.network(
-          url.toString(),
-        ),
-    };
+        false => Image.network(
+            url.toString(),
+            width: double.infinity,
+            height: size.height / 3,
+            cacheHeight: size.height ~/ 3,
+            fit: BoxFit.cover,
+          ),
+      },
+    );
   }
 }
