@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ImageOrVideoWidget extends StatelessWidget {
   const ImageOrVideoWidget({
@@ -28,6 +27,39 @@ class ImageOrVideoWidget extends StatelessWidget {
             height: size.height / 3,
             cacheHeight: size.height ~/ 3,
             fit: BoxFit.cover,
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              return AnimatedOpacity(
+                duration: const Duration(milliseconds: 400),
+                opacity: frame == null ? 0 : 1,
+                child: child,
+              );
+            },
+            loadingBuilder: (context, child, loadingProgress) {
+              var progress = 0.0;
+              if (loadingProgress != null &&
+                  loadingProgress.expectedTotalBytes != 0) {
+                progress = loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!;
+              }
+
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: const [
+                      Colors.grey,
+                      Colors.white,
+                    ],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: [
+                      0,
+                      progress,
+                    ],
+                  ),
+                ),
+                child: child,
+              );
+            },
           ),
       },
     );
