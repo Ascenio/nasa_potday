@@ -27,6 +27,8 @@ class RemoteNasaRepository implements NasaRepository {
       return (jsonDecode(response.body) as List)
           .cast<Map<String, dynamic>>()
           .map(PictureModel.fromJson)
+          .toList()
+          .reversed
           .toList();
     } catch (error) {
       debugPrint('Could not load picture of the day: $error');
