@@ -18,7 +18,11 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
   @override
   void initState() {
     super.initState();
-    context.read<PictureOfTheDayCubit>().loadPictureOfTheDay();
+    refresh();
+  }
+
+  Future<void> refresh() {
+    return context.read<PictureOfTheDayCubit>().loadPictureOfTheDay();
   }
 
   @override
@@ -29,16 +33,17 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
         builder: (context, state) {
           return switch (state) {
             PictureOfTheDayLoading() => const LoadingWidget(),
-            PictureOfTheDayLoaded() => ListView.separated(
-                itemBuilder: (_, index) =>
-                    PictureWidget(picture: state.pictures[index]),
-                separatorBuilder: (_, __) => const SizedBox(height: 16),
-                itemCount: state.pictures.length,
+            PictureOfTheDayLoaded() => RefreshIndicator(
+                onRefresh: refresh,
+                child: ListView.separated(
+                  itemBuilder: (_, index) =>
+                      PictureWidget(picture: state.pictures[index]),
+                  separatorBuilder: (_, __) => const SizedBox(height: 16),
+                  itemCount: state.pictures.length,
+                ),
               ),
             PictureOfTheDayFailed() => TryAgainWidget(
-                onTryAgainPressed: () {
-                  context.read<PictureOfTheDayCubit>().loadPictureOfTheDay();
-                },
+                onTryAgainPressed: refresh,
               ),
           };
         },
