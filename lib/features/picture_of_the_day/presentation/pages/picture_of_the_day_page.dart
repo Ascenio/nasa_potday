@@ -34,7 +34,8 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
         builder: (context, state) {
           return switch (state) {
             PictureOfTheDayLoading() => const LoadingWidget(),
-            PictureOfTheDayLoaded(:final isLoadingMore) => RefreshIndicator(
+            PictureOfTheDayLoaded(:final isLoadingMore) =>
+              RefreshIndicator.adaptive(
                 onRefresh: refresh,
                 child: ScrollObserver(
                   onScrollEnd: () {
