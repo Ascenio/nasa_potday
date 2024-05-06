@@ -68,8 +68,6 @@ class RemoteNasaRepository implements NasaRepository {
     final uri = Uri.parse(baseUrl).replace(
       queryParameters: request.toJson(),
     );
-    print(
-        '${uri.queryParameters['start_date']} -> ${uri.queryParameters['end_date']}');
     final response = await get(uri);
     return (jsonDecode(response.body) as List)
         .cast<Map<String, dynamic>>()
