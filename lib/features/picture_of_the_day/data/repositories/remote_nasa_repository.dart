@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:nasa_potday/features/picture_of_the_day/data/models/load_picture_of_the_day_request_model.dart';
 import 'package:nasa_potday/features/picture_of_the_day/data/models/picture_model.dart';
-import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
+import 'package:nasa_potday/features/picture_of_the_day/domain/entities/pictures_page_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/repositories/nasa_repository.dart';
 
 class RemoteNasaRepository implements NasaRepository {
@@ -16,23 +17,65 @@ class RemoteNasaRepository implements NasaRepository {
   final String apiKey;
 
   @override
-  Future<List<PictureEntity>> loadPictureOfTheDay({
+  Future<PicturesPageEntity> loadPictureOfTheDay({
     required DateTime startDate,
   }) async {
-    final startDateString = startDate.toString().split(' ').first;
     try {
-      final uri =
-          Uri.parse('$baseUrl?api_key=$apiKey&start_date=$startDateString');
-      final response = await get(uri);
-      return (jsonDecode(response.body) as List)
-          .cast<Map<String, dynamic>>()
-          .map(PictureModel.fromJson)
-          .toList()
-          .reversed
-          .toList();
+      final pictures = await _request(
+        LoadPictureOfTheDayRequestModel(
+          apiKey: apiKey,
+          startDate: startDate,
+        ),
+      );
+      return PicturesPageEntity(
+        pictures: pictures,
+        startDate: startDate,
+      );
     } catch (error) {
       debugPrint('Could not load picture of the day: $error');
     }
-    return [];
+    return PicturesPageEntity(
+      pictures: [],
+      startDate: startDate,
+    );
+  }
+
+  @override
+  Future<PicturesPageEntity> loadNextPage({
+    required DateTime currentStartDate,
+  }) async {
+    final newStartDate = currentStartDate.subtract(const Duration(days: 7));
+    try {
+      final pictures = await _request(
+        LoadPictureOfTheDayRequestModel(
+          apiKey: apiKey,
+          startDate: newStartDate,
+          endDate: currentStartDate.subtract(const Duration(days: 1)),
+        ),
+      );
+      return PicturesPageEntity(pictures: pictures, startDate: newStartDate);
+    } catch (error) {
+      debugPrint('Could not load picture of the day: $error');
+    }
+    return PicturesPageEntity(
+      pictures: [],
+      startDate: newStartDate,
+    );
+  }
+
+  Future<List<PictureModel>> _request(
+      LoadPictureOfTheDayRequestModel request) async {
+    final uri = Uri.parse(baseUrl).replace(
+      queryParameters: request.toJson(),
+    );
+    print(
+        '${uri.queryParameters['start_date']} -> ${uri.queryParameters['end_date']}');
+    final response = await get(uri);
+    return (jsonDecode(response.body) as List)
+        .cast<Map<String, dynamic>>()
+        .map(PictureModel.fromJson)
+        .toList()
+        .reversed
+        .toList();
   }
 }

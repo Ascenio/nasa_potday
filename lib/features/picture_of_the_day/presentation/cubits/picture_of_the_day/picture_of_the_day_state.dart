@@ -8,25 +8,34 @@ sealed class PictureOfTheDayState extends Equatable {
   final DateTime startDate;
 
   @override
-  List<Object?> get props => [startDate];
+  List<Object?> get props => [
+        startDate,
+      ];
 }
 
 final class PictureOfTheDayLoading extends PictureOfTheDayState {
-  const PictureOfTheDayLoading({
-    required super.startDate,
-  });
+  PictureOfTheDayLoading()
+      : super(
+          startDate: DateTime.now().subtract(const Duration(days: 7)),
+        );
 }
 
 final class PictureOfTheDayLoaded extends PictureOfTheDayState {
   const PictureOfTheDayLoaded({
     required super.startDate,
     required this.pictures,
+    required this.isLoadingMore,
   });
 
   final List<PictureEntity> pictures;
+  final bool isLoadingMore;
 
   @override
-  List<Object?> get props => [super.props, pictures];
+  List<Object?> get props => [
+        super.props,
+        pictures,
+        isLoadingMore,
+      ];
 }
 
 final class PictureOfTheDayFailed extends PictureOfTheDayState {

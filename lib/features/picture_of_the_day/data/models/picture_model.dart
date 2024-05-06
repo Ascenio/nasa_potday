@@ -17,7 +17,7 @@ class PictureModel extends PictureEntity {
       title: json['title'],
       explanation: json['explanation'],
       date: DateTime.parse(json['date']),
-      isVideo: url.host == 'www.youtube.com',
+      isVideo: url.host == 'www.youtube.com' || url.host == 'youtube.com',
     );
   }
 }

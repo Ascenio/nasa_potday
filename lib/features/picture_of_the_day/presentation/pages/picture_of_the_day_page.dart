@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/cubits/picture_of_the_day/picture_of_the_day_cubit.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/loading_widget.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/picture_widget.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/scroll_observer.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/try_again_widget.dart';
 
 class PictureOfTheDayPage extends StatefulWidget {
@@ -33,13 +34,27 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
         builder: (context, state) {
           return switch (state) {
             PictureOfTheDayLoading() => const LoadingWidget(),
-            PictureOfTheDayLoaded() => RefreshIndicator(
+            PictureOfTheDayLoaded(:final isLoadingMore) => RefreshIndicator(
                 onRefresh: refresh,
-                child: ListView.separated(
-                  itemBuilder: (_, index) =>
-                      PictureWidget(picture: state.pictures[index]),
-                  separatorBuilder: (_, __) => const SizedBox(height: 16),
-                  itemCount: state.pictures.length,
+                child: ScrollObserver(
+                  onScrollEnd: () {
+                    context.read<PictureOfTheDayCubit>().loadNextPage();
+                  },
+                  child: Builder(builder: (context) {
+                    final itemCount =
+                        state.pictures.length + (isLoadingMore ? 1 : 0);
+                    return ListView.separated(
+                      itemBuilder: (_, index) {
+                        final isLast = index == itemCount - 1;
+                        if (isLast && isLoadingMore) {
+                          return const CircularProgressIndicator.adaptive();
+                        }
+                        return PictureWidget(picture: state.pictures[index]);
+                      },
+                      separatorBuilder: (_, __) => const SizedBox(height: 32),
+                      itemCount: itemCount,
+                    );
+                  }),
                 ),
               ),
             PictureOfTheDayFailed() => TryAgainWidget(
