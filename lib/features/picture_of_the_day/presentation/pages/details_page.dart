@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/date_widget.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/image_or_video_widget.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage({
@@ -19,8 +20,9 @@ class DetailsPage extends StatelessWidget {
           SliverToBoxAdapter(
             child: Hero(
               tag: picture.url,
-              child: Image.network(
-                picture.url.toString(),
+              child: ImageOrVideoWidget(
+                isVideo: picture.isVideo,
+                url: picture.url,
               ),
             ),
           ),

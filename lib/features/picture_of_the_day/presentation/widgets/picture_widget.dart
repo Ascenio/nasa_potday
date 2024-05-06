@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/pages/details_page.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/date_widget.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/image_or_video_widget.dart';
 
 class PictureWidget extends StatelessWidget {
   const PictureWidget({
@@ -24,16 +25,10 @@ class PictureWidget extends StatelessWidget {
         children: [
           Hero(
             tag: picture.url,
-            child: switch (picture.isVideo) {
-              true => const Placeholder(
-                  child: SizedBox.expand(
-                    child: Center(child: Text('Video is not implemented yet')),
-                  ),
-                ),
-              false => Image.network(
-                  picture.url.toString(),
-                ),
-            },
+            child: ImageOrVideoWidget(
+              isVideo: picture.isVideo,
+              url: picture.url,
+            ),
           ),
           const SizedBox(height: 8),
           Padding(
