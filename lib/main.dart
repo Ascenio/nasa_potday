@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nasa_potday/features/picture_of_the_day/data/repositories/remote_nasa_repository.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/cubits/picture_of_the_day/picture_of_the_day_cubit.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/pages/picture_of_the_day_page.dart';
 
 void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      home: BlocProvider(
+        create: (_) => PictureOfTheDayCubit(
+          nasaRepository: RemoteNasaRepository(
+            baseUrl: const String.fromEnvironment('BASE_URL'),
+            apiKey: const String.fromEnvironment('API_KEY'),
+          ),
         ),
+        child: const PictureOfTheDayPage(),
       ),
     );
   }
