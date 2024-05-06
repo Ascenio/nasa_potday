@@ -4,6 +4,7 @@ class PictureModel extends PictureEntity {
   const PictureModel({
     required super.url,
     required super.title,
+    required super.explanation,
     required super.date,
     required super.isVideo,
   });
@@ -14,6 +15,7 @@ class PictureModel extends PictureEntity {
     return PictureModel(
       url: url,
       title: json['title'],
+      explanation: json['explanation'],
       date: DateTime.parse(json['date']),
       isVideo: url.host == 'www.youtube.com',
     );
