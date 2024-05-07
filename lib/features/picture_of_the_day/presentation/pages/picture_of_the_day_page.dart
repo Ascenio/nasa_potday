@@ -41,21 +41,26 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
                   onScrollEnd: () {
                     context.read<PictureOfTheDayCubit>().loadNextPage();
                   },
-                  child: Builder(builder: (context) {
-                    final itemCount =
-                        state.pictures.length + (isLoadingMore ? 1 : 0);
-                    return ListView.separated(
-                      itemBuilder: (_, index) {
-                        final isLast = index == itemCount - 1;
-                        if (isLast && isLoadingMore) {
-                          return const CircularProgressIndicator.adaptive();
-                        }
-                        return PictureWidget(picture: state.pictures[index]);
-                      },
-                      separatorBuilder: (_, __) => const SizedBox(height: 32),
-                      itemCount: itemCount,
-                    );
-                  }),
+                  child: Builder(
+                    builder: (_) {
+                      final itemCount =
+                          state.pictures.length + (isLoadingMore ? 1 : 0);
+                      return ListView.separated(
+                        itemBuilder: (_, index) {
+                          final isLast = index == itemCount - 1;
+                          if (isLast && isLoadingMore) {
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 32),
+                              child: LoadingWidget(),
+                            );
+                          }
+                          return PictureWidget(picture: state.pictures[index]);
+                        },
+                        separatorBuilder: (_, __) => const SizedBox(height: 32),
+                        itemCount: itemCount,
+                      );
+                    },
+                  ),
                 ),
               ),
             PictureOfTheDayFailed() => TryAgainWidget(
