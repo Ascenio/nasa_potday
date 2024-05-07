@@ -44,7 +44,7 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
                   child: Builder(
                     builder: (_) {
                       final itemCount =
-                          state.pictures.length + (isLoadingMore ? 1 : 0);
+                          state.page.pictures.length + (isLoadingMore ? 1 : 0);
                       return ListView.separated(
                         itemBuilder: (_, index) {
                           final isLast = index == itemCount - 1;
@@ -54,7 +54,8 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
                               child: LoadingWidget(),
                             );
                           }
-                          return PictureWidget(picture: state.pictures[index]);
+                          return PictureWidget(
+                              picture: state.page.pictures[index]);
                         },
                         separatorBuilder: (_, __) => const SizedBox(height: 32),
                         itemCount: itemCount,

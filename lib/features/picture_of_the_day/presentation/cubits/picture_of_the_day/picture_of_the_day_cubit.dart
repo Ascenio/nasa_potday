@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
+import 'package:nasa_potday/features/picture_of_the_day/domain/entities/pictures_page_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/repositories/nasa_repository.dart';
 
 part 'picture_of_the_day_state.dart';
@@ -8,25 +8,20 @@ part 'picture_of_the_day_state.dart';
 class PictureOfTheDayCubit extends Cubit<PictureOfTheDayState> {
   PictureOfTheDayCubit({required NasaRepository nasaRepository})
       : _nasaRepository = nasaRepository,
-        super(PictureOfTheDayLoading());
+        super(const PictureOfTheDayLoading());
 
   final NasaRepository _nasaRepository;
 
   Future<void> loadPictureOfTheDay() async {
-    emit(PictureOfTheDayLoading());
-    final result = await _nasaRepository.loadPictureOfTheDay(
-      startDate: state.startDate,
-    );
+    emit(const PictureOfTheDayLoading());
+    final result = await _nasaRepository.loadPictureOfTheDay();
     if (result.pictures.isNotEmpty) {
       emit(PictureOfTheDayLoaded(
-        startDate: state.startDate,
-        pictures: result.pictures,
+        page: result,
         isLoadingMore: false,
       ));
     } else {
-      emit(PictureOfTheDayFailed(
-        startDate: state.startDate,
-      ));
+      emit(const PictureOfTheDayFailed());
     }
   }
 
@@ -37,21 +32,18 @@ class PictureOfTheDayCubit extends Cubit<PictureOfTheDayState> {
     }
     emit(
       PictureOfTheDayLoaded(
-        startDate: currentState.startDate,
-        pictures: currentState.pictures,
+        page: currentState.page,
         isLoadingMore: true,
       ),
     );
     final newPage = await _nasaRepository.loadNextPage(
-      currentStartDate: state.startDate,
+      currentStartDate: currentState.page.startDate,
     );
-    emit(PictureOfTheDayLoaded(
-      startDate: newPage.startDate,
-      pictures: [
-        ...currentState.pictures,
-        ...newPage.pictures,
-      ],
-      isLoadingMore: false,
-    ));
+    emit(
+      PictureOfTheDayLoaded(
+        page: currentState.page.merge(newPage),
+        isLoadingMore: false,
+      ),
+    );
   }
 }

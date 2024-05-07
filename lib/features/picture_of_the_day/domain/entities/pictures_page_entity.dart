@@ -10,6 +10,18 @@ class PicturesPageEntity {
   final List<PictureEntity> pictures;
   final DateTime startDate;
 
+  PicturesPageEntity merge(
+    PicturesPageEntity another,
+  ) {
+    return PicturesPageEntity(
+      startDate: another.startDate,
+      pictures: [
+        ...pictures,
+        ...another.pictures,
+      ],
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
