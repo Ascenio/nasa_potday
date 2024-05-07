@@ -16,10 +16,10 @@ class ImageOrVideoWidget extends StatelessWidget {
     return SizedBox(
       height: size.height / 3,
       child: switch (isVideo) {
-        true => const Placeholder(
-            child: SizedBox.expand(
-              child: Center(child: Text('Video is not implemented yet')),
-            ),
+        true => Container(
+            width: double.infinity,
+            color: Colors.black,
+            child: Image.asset('assets/youtube-logo.png'),
           ),
         false => Image.network(
             url.toString(),
