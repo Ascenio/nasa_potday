@@ -5,8 +5,8 @@ import 'package:nasa_potday/features/picture_of_the_day/data/datasources/remote_
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/pictures_page_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/repositories/nasa_repository.dart';
 
-class RemoteNasaRepository implements NasaRepository {
-  RemoteNasaRepository({
+class CachingNasaRepository implements NasaRepository {
+  CachingNasaRepository({
     required this.clock,
     required this.remoteDataSource,
     required this.localDataSource,
