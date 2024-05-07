@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ImageOrVideoWidget extends StatelessWidget {
@@ -13,6 +14,12 @@ class ImageOrVideoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    final brightness = MediaQuery.platformBrightnessOf(context);
+    final onSurfaceColor = switch (brightness) {
+      Brightness.dark => Colors.black,
+      Brightness.light => Colors.white,
+    };
+    final surfaceColor = Theme.of(context).dividerColor;
     return Hero(
       tag: url,
       child: SizedBox(
@@ -20,46 +27,49 @@ class ImageOrVideoWidget extends StatelessWidget {
         child: switch (isVideo) {
           true => Container(
               width: double.infinity,
-              color: Colors.black,
+              color: surfaceColor,
               child: Image.asset('assets/youtube-logo.png'),
             ),
-          false => Image.network(
-              url.toString(),
+          false => CachedNetworkImage(
+              imageUrl: url.toString(),
               width: double.infinity,
               height: size.height / 3,
-              cacheHeight: size.height ~/ 3,
+              memCacheHeight: size.height ~/ 3,
               fit: BoxFit.cover,
-              frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: frame == null ? 0 : 1,
-                  child: child,
-                );
-              },
-              loadingBuilder: (context, child, loadingProgress) {
-                var progress = 0.0;
-                if (loadingProgress != null &&
-                    loadingProgress.expectedTotalBytes != 0) {
-                  progress = loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!;
-                }
-
+              errorWidget: (context, url, error) => ColoredBox(
+                color: surfaceColor,
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Colors.white,
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'Could not show the image',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              progressIndicatorBuilder: (_, __, progress) {
                 return DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: const [
-                        Colors.grey,
-                        Colors.white,
+                      colors: [
+                        onSurfaceColor,
+                        surfaceColor,
                       ],
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                       stops: [
                         0,
-                        progress,
+                        progress.progress ?? 0,
                       ],
                     ),
                   ),
-                  child: child,
                 );
               },
             ),

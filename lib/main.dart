@@ -35,6 +35,8 @@ class _MainAppState extends State<MainApp> {
         ),
         child: const PictureOfTheDayPage(),
       ),
+      theme: ThemeData.from(colorScheme: const ColorScheme.light()),
+      darkTheme: ThemeData.from(colorScheme: const ColorScheme.dark()),
     );
   }
 }
