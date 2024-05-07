@@ -53,7 +53,7 @@ class RemoteNasaRepository implements NasaRepository {
     final remoteStartDate =
         localPage.pictures.firstOrNull?.date.add(const Duration(days: 1)) ??
             startDate;
-    final remotePage = await remoteDataSource.loadPictureOfTheDay(
+    final remotePage = await remoteDataSource.query(
       startDate: remoteStartDate,
       endDate: endDate,
     );

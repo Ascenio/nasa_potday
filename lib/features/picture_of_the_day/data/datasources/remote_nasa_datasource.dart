@@ -15,7 +15,7 @@ final class RemoteNasaDataSource {
   final String baseUrl;
   final String apiKey;
 
-  Future<PicturesPageEntity> loadPictureOfTheDay({
+  Future<PicturesPageEntity> query({
     required DateTime startDate,
     required DateTime endDate,
   }) async {
