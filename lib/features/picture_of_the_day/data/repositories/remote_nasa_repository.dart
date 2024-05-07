@@ -19,30 +19,12 @@ class RemoteNasaRepository implements NasaRepository {
   static const _defaultPageRange = 7;
 
   @override
-  Future<PicturesPageEntity> loadPictureOfTheDay() async {
-    final today = clock.today();
-    final localStartDate =
-        today.subtract(const Duration(days: _defaultPageRange - 1));
-    final localPage = await localDataSource.query(
-      startDate: localStartDate,
-      endDate: today,
+  Future<PicturesPageEntity> loadInitialPage() {
+    final endDate = clock.today();
+    final startDate = endDate.subtract(
+      const Duration(days: _defaultPageRange - 1),
     );
-    if (localPage.pictures.length == _defaultPageRange) {
-      debugPrint('Only local storage used.');
-      return localPage;
-    }
-    final remoteStartDate =
-        localPage.pictures.firstOrNull?.date.add(const Duration(days: 1)) ??
-            localStartDate;
-    final remotePage = await remoteDataSource.loadPictureOfTheDay(
-      startDate: remoteStartDate,
-      endDate: today,
-    );
-    await localDataSource.save(remotePage);
-    debugPrint(
-      'Took ${localPage.pictures.length} from local storage and ${remotePage.pictures.length} from remote',
-    );
-    return remotePage.merge(localPage);
+    return _loadPage(startDate: startDate, endDate: endDate);
   }
 
   @override
@@ -56,5 +38,31 @@ class RemoteNasaRepository implements NasaRepository {
     );
     await localDataSource.save(remotePage);
     return remotePage;
+  }
+
+  Future<PicturesPageEntity> _loadPage({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    final localPage = await localDataSource.query(
+      startDate: startDate,
+      endDate: endDate,
+    );
+    if (localPage.pictures.length == _defaultPageRange) {
+      debugPrint('Only local storage used.');
+      return localPage;
+    }
+    final remoteStartDate =
+        localPage.pictures.firstOrNull?.date.add(const Duration(days: 1)) ??
+            startDate;
+    final remotePage = await remoteDataSource.loadPictureOfTheDay(
+      startDate: remoteStartDate,
+      endDate: endDate,
+    );
+    await localDataSource.save(remotePage);
+    debugPrint(
+      'Took ${localPage.pictures.length} from local storage and ${remotePage.pictures.length} from remote',
+    );
+    return remotePage.merge(localPage);
   }
 }
