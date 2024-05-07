@@ -23,12 +23,9 @@ class PictureWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Hero(
-            tag: picture.url,
-            child: ImageOrVideoWidget(
-              isVideo: picture.isVideo,
-              url: picture.url,
-            ),
+          ImageOrVideoWidget(
+            isVideo: picture.isVideo,
+            url: picture.url,
           ),
           const SizedBox(height: 8),
           Padding(

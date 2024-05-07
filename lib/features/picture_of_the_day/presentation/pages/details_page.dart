@@ -18,12 +18,9 @@ class DetailsPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Hero(
-              tag: picture.url,
-              child: ImageOrVideoWidget(
-                isVideo: picture.isVideo,
-                url: picture.url,
-              ),
+            child: ImageOrVideoWidget(
+              isVideo: picture.isVideo,
+              url: picture.url,
             ),
           ),
           const SliverPadding(
