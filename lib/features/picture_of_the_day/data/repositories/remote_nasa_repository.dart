@@ -30,14 +30,12 @@ class RemoteNasaRepository implements NasaRepository {
   @override
   Future<PicturesPageEntity> loadNextPage({
     required DateTime currentStartDate,
-  }) async {
-    final remotePage = await remoteDataSource.loadPictureOfTheDay(
+  }) {
+    return _loadPage(
       startDate:
           currentStartDate.subtract(const Duration(days: _defaultPageRange)),
       endDate: currentStartDate.subtract(const Duration(days: 1)),
     );
-    await localDataSource.save(remotePage);
-    return remotePage;
   }
 
   Future<PicturesPageEntity> _loadPage({
