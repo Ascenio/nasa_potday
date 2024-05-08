@@ -5,6 +5,7 @@
             "name": "debug",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main.dart",
             "args": [
                 "--dart-define-from-file=env.json"
             ]
@@ -13,6 +14,7 @@
             "name": "profile",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main.dart",
             "flutterMode": "profile",
             "args": [
                 "--dart-define-from-file=env.json"

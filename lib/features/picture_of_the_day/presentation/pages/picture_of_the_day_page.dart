@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/cubits/picture_of_the_day/picture_of_the_day_cubit.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/loading_widget.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/not_found_widget.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/picture_widget.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/scroll_observer.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/search_app_bar.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/try_again_widget.dart';
 
 class PictureOfTheDayPage extends StatefulWidget {
@@ -29,7 +31,15 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Picture of the day')),
+      appBar: SearchAppBar(
+        onReset: refresh,
+        onTextSearch: (text) {
+          context.read<PictureOfTheDayCubit>().searchByText(text);
+        },
+        onDateSearch: (date) {
+          context.read<PictureOfTheDayCubit>().searchByDate(date);
+        },
+      ),
       body: BlocBuilder<PictureOfTheDayCubit, PictureOfTheDayState>(
         builder: (context, state) {
           return switch (state) {
@@ -67,6 +77,17 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
             PictureOfTheDayFailed() => TryAgainWidget(
                 onTryAgainPressed: refresh,
               ),
+            PictureOfTheDaySearchByText(:final pictures) ||
+            PictureOfTheDaySearchByDate(:final pictures) =>
+              pictures.isEmpty
+                  ? const NotFoundWidget()
+                  : ListView.separated(
+                      itemBuilder: (_, index) {
+                        return PictureWidget(picture: pictures[index]);
+                      },
+                      itemCount: pictures.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 32),
+                    ),
           };
         },
       ),

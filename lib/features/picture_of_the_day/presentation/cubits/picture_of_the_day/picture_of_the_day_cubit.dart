@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/pictures_page_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/repositories/nasa_repository.dart';
 
@@ -43,6 +44,26 @@ class PictureOfTheDayCubit extends Cubit<PictureOfTheDayState> {
       PictureOfTheDayLoaded(
         page: currentState.page.merge(newPage),
         isLoadingMore: false,
+      ),
+    );
+  }
+
+  Future<void> searchByText(String text) async {
+    emit(const PictureOfTheDayLoading());
+    final pictures = await _nasaRepository.searchByText(text);
+    emit(
+      PictureOfTheDaySearchByText(
+        pictures: pictures,
+      ),
+    );
+  }
+
+  Future<void> searchByDate(DateTime date) async {
+    emit(const PictureOfTheDayLoading());
+    final pictures = await _nasaRepository.searchByDate(date);
+    emit(
+      PictureOfTheDaySearchByDate(
+        pictures: pictures,
       ),
     );
   }

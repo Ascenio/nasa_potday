@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nasa_potday/features/picture_of_the_day/data/datasources/local_nasa_datasource.dart';
 import 'package:nasa_potday/features/picture_of_the_day/data/models/picture_model.dart';
+import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/pictures_page_entity.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -81,5 +82,24 @@ CREATE TABLE $_picturesTable (
       startDate: startDate,
       pictures: [],
     );
+  }
+
+  @override
+  Future<List<PictureEntity>> search({
+    required String title,
+  }) async {
+    try {
+      final database = await _initialize();
+      final result = await database.query(
+        _picturesTable,
+        where: r"UPPER(title) LIKE UPPER(?)",
+        whereArgs: ['%$title%'],
+        orderBy: 'DATE(date) DESC',
+      );
+      return result.map(PictureModel.fromJson).toList();
+    } on DatabaseException catch (error) {
+      debugPrint('Could not search for "$title": $error');
+    }
+    return [];
   }
 }

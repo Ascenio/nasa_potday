@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nasa_potday/core/clock/clock.dart';
 import 'package:nasa_potday/features/picture_of_the_day/data/datasources/local_nasa_datasource.dart';
 import 'package:nasa_potday/features/picture_of_the_day/data/datasources/remote_nasa_datasource.dart';
+import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/pictures_page_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/repositories/nasa_repository.dart';
 
@@ -62,5 +63,29 @@ class CachingNasaRepository implements NasaRepository {
       'Took ${localPage.pictures.length} from local storage and ${remotePage.pictures.length} from remote',
     );
     return remotePage.merge(localPage);
+  }
+
+  @override
+  Future<List<PictureEntity>> searchByDate(DateTime date) async {
+    final localPage = await localDataSource.query(
+      startDate: date,
+      endDate: date,
+    );
+    if (localPage.pictures.isNotEmpty) {
+      debugPrint('Search by date hit local storage');
+      return localPage.pictures;
+    }
+    final remotePage = await remoteDataSource.query(
+      startDate: date,
+      endDate: date,
+    );
+    await localDataSource.save(remotePage);
+    debugPrint('Search by date hit remote');
+    return remotePage.pictures;
+  }
+
+  @override
+  Future<List<PictureEntity>> searchByText(String text) {
+    return localDataSource.search(title: text);
   }
 }

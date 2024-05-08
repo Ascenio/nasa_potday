@@ -208,4 +208,84 @@ void main() {
     );
     expect(page, secondPage);
   });
+
+  test('when searching by date should check local storage first', () async {
+    final date = DateTime(2024, 4, 30);
+    final picture = PictureEntity(
+      url: Uri.parse('google.com.br/image.jpg'),
+      explanation: 'a explanation',
+      title: 'Some title',
+      date: date,
+      isVideo: false,
+    );
+    final localStoragePage = PicturesPageEntity(
+      pictures: [picture],
+      startDate: date,
+    );
+    when(
+      () => localDataSource.query(
+        startDate: date,
+        endDate: date,
+      ),
+    ).thenAnswer(
+      (_) async => localStoragePage,
+    );
+    final pictures = await repository.searchByDate(date);
+    expect(pictures, [picture]);
+  });
+
+  test('when searching by date should check remote after local storage',
+      () async {
+    final date = DateTime(2024, 4, 30);
+    final picture = PictureEntity(
+      url: Uri.parse('google.com.br/image.jpg'),
+      explanation: 'a explanation',
+      title: 'Some title',
+      date: date,
+      isVideo: false,
+    );
+    final remotePage = PicturesPageEntity(
+      pictures: [picture],
+      startDate: date,
+    );
+    when(
+      () => localDataSource.query(
+        startDate: date,
+        endDate: date,
+      ),
+    ).thenAnswer(
+      (_) async => PicturesPageEntity(
+        pictures: [],
+        startDate: date,
+      ),
+    );
+    when(
+      () => remoteDataSource.query(
+        startDate: date,
+        endDate: date,
+      ),
+    ).thenAnswer(
+      (_) async => remotePage,
+    );
+    when(() => localDataSource.save(remotePage)).thenAnswer((_) async {});
+    final pictures = await repository.searchByDate(date);
+    expect(pictures, [picture]);
+  });
+
+  test('when searching by text should query local storage only', () async {
+    const title = 'Some';
+    final picture = PictureEntity(
+      url: Uri.parse('google.com.br/image.jpg'),
+      explanation: 'a explanation',
+      title: 'Some title',
+      date: DateTime(2024, 4, 30),
+      isVideo: false,
+    );
+    when(() => localDataSource.search(title: title)).thenAnswer(
+      (_) async => [picture],
+    );
+    final pictures = await repository.searchByText(title);
+    expect(pictures, [picture]);
+    verifyZeroInteractions(remoteDataSource);
+  });
 }

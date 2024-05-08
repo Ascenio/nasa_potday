@@ -108,4 +108,43 @@ void main() {
       ),
     ],
   );
+
+  final picture = PictureEntity(
+    url: Uri.parse('google.com.br/image.jpg'),
+    explanation: 'a explanation',
+    title: 'Some title',
+    date: DateTime(2024, 4, 30),
+    isVideo: false,
+  );
+
+  blocTest<PictureOfTheDayCubit, PictureOfTheDayState>(
+    'emits [PictureOfTheDayLoading, PictureOfTheDaySearchByText] when searching by text',
+    build: () => cubit,
+    setUp: () {
+      when(() => nasaRepository.searchByText('Some')).thenAnswer(
+        (_) async => [picture],
+      );
+    },
+    act: (cubit) => cubit.searchByText('Some'),
+    expect: () => <PictureOfTheDayState>[
+      const PictureOfTheDayLoading(),
+      PictureOfTheDaySearchByText(pictures: [picture]),
+    ],
+  );
+
+  blocTest<PictureOfTheDayCubit, PictureOfTheDayState>(
+    'emits [PictureOfTheDayLoading, PictureOfTheDaySearchByText] when searching by date',
+    build: () => cubit,
+    setUp: () {
+      when(() => nasaRepository.searchByDate(DateTime(2024, DateTime.may, 8)))
+          .thenAnswer(
+        (_) async => [picture],
+      );
+    },
+    act: (cubit) => cubit.searchByDate(DateTime(2024, DateTime.may, 8)),
+    expect: () => <PictureOfTheDayState>[
+      const PictureOfTheDayLoading(),
+      PictureOfTheDaySearchByText(pictures: [picture]),
+    ],
+  );
 }
