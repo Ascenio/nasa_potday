@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/date_as_text_widget.dart';
 
 class DateWidget extends StatelessWidget {
   const DateWidget({
@@ -15,7 +15,7 @@ class DateWidget extends StatelessWidget {
       children: [
         const Icon(Icons.calendar_month_outlined),
         const SizedBox(width: 8),
-        Text(DateFormat('dd/MM/yyyy').format(date)),
+        DateAsTextWidget(date: date)
       ],
     );
   }
