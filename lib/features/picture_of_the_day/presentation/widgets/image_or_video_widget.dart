@@ -24,13 +24,9 @@ class ImageOrVideoWidget extends StatelessWidget {
       tag: url,
       child: SizedBox(
         height: size.height / 3,
-        child: switch (isVideo) {
-          true => Container(
-              width: double.infinity,
-              color: surfaceColor,
-              child: Image.asset('assets/youtube-logo.png'),
-            ),
-          false => CachedNetworkImage(
+        child: Stack(
+          children: [
+            CachedNetworkImage(
               imageUrl: url.toString(),
               width: double.infinity,
               height: size.height / 3,
@@ -73,7 +69,9 @@ class ImageOrVideoWidget extends StatelessWidget {
                 );
               },
             ),
-        },
+            if (isVideo) Center(child: Image.asset('assets/youtube-logo.png')),
+          ],
+        ),
       ),
     );
   }

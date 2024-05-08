@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:nasa_potday/features/picture_of_the_day/data/datasources/remote_nasa_datasource.dart';
 import 'package:nasa_potday/features/picture_of_the_day/data/models/load_picture_of_the_day_request_model.dart';
-import 'package:nasa_potday/features/picture_of_the_day/data/models/picture_model.dart';
+import 'package:nasa_potday/features/picture_of_the_day/data/models/remote_picture_model.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/pictures_page_entity.dart';
 
 final class HttpRemoteNasaDataSource implements RemoteNasaDataSource {
@@ -42,7 +42,7 @@ final class HttpRemoteNasaDataSource implements RemoteNasaDataSource {
     );
   }
 
-  Future<List<PictureModel>> _request(
+  Future<List<RemotePictureModel>> _request(
     LoadPictureOfTheDayRequestModel request,
   ) async {
     final uri = Uri.parse(baseUrl).replace(
@@ -51,7 +51,7 @@ final class HttpRemoteNasaDataSource implements RemoteNasaDataSource {
     final response = await get(uri);
     return (jsonDecode(response.body) as List)
         .cast<Map<String, dynamic>>()
-        .map(PictureModel.fromJson)
+        .map(RemotePictureModel.fromJson)
         .toList()
         .reversed
         .toList();

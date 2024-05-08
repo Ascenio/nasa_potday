@@ -14,6 +14,7 @@ class LoadPictureOfTheDayRequestModel {
       'api_key': apiKey,
       'start_date': _dateToString(startDate),
       'end_date': _dateToString(endDate),
+      'thumbs': 'true',
     };
   }
 
