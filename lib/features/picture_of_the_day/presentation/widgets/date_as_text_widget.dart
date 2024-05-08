@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
+import 'package:nasa_potday/core/date_formatters/date_formatter.dart';
 
 class DateAsTextWidget extends StatelessWidget {
   const DateAsTextWidget({
@@ -11,6 +11,6 @@ class DateAsTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(DateFormat('dd/MM/yyyy').format(date));
+    return Text(DateFormatter.ddMMyyyy(date));
   }
 }
