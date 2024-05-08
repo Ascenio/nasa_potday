@@ -16,7 +16,7 @@ class TryAgainWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Center(child: Text('Could not load picture')),
+          const Center(child: Text('Could not load any pictures')),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: onTryAgainPressed,
