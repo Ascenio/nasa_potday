@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nasa_potday/features/picture_of_the_day/domain/entities/picture_entity.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/pages/details_page.dart';
-import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/date_widget.dart';
 import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/image_or_video_widget.dart';
+import 'package:nasa_potday/features/picture_of_the_day/presentation/widgets/picture_summary.dart';
 
 class PictureWidget extends StatelessWidget {
   const PictureWidget({
@@ -28,19 +28,7 @@ class PictureWidget extends StatelessWidget {
             url: picture.url,
           ),
           const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Text(picture.title),
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: DateWidget(date: picture.date),
-          ),
+          PictureSummary(picture: picture),
         ],
       ),
     );
