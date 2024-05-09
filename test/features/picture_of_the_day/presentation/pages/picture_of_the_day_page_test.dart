@@ -67,7 +67,6 @@ void main() {
 
   testWidgets('should display TryAgainWidget when cant load the first page',
       (tester) async {
-    when(() => cubit.loadPictureOfTheDay()).thenAnswer((_) async {});
     await setupPage(tester: tester, states: [
       const PictureOfTheDayLoading(),
       PictureOfTheDayLoaded(page: page, isLoadingMore: false),
@@ -78,7 +77,6 @@ void main() {
 
   testWidgets('should display NotFoundWidget when search has no results',
       (tester) async {
-    when(() => cubit.loadPictureOfTheDay()).thenAnswer((_) async {});
     await setupPage(tester: tester, states: [
       const PictureOfTheDayLoading(),
       const PictureOfTheDaySearch(pictures: []),
