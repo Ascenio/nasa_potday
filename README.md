@@ -5,6 +5,7 @@ A NASA's [Astronomy Picture of the Day API](https://github.com/nasa/apod-api) co
 Contains some goodies such as:
 
 - Layered architecture
+- Pagination
 - Animations
 - Unit testing
 - Widget testing
