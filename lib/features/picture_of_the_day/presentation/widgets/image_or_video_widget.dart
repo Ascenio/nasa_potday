@@ -40,12 +40,10 @@ class ImageOrVideoWidget extends StatelessWidget {
                     Icon(
                       Icons.error_outline,
                       size: 64,
-                      color: Colors.white,
                     ),
                     SizedBox(height: 16),
                     Text(
                       'Could not show the image',
-                      style: TextStyle(color: Colors.white),
                     )
                   ],
                 ),
