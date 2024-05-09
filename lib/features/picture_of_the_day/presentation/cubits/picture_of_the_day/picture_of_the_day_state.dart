@@ -28,22 +28,8 @@ final class PictureOfTheDayLoaded extends PictureOfTheDayState {
       ];
 }
 
-final class PictureOfTheDaySearchByText extends PictureOfTheDayState {
-  const PictureOfTheDaySearchByText({
-    required this.pictures,
-  });
-
-  final List<PictureEntity> pictures;
-
-  @override
-  List<Object?> get props => [
-        super.props,
-        pictures,
-      ];
-}
-
-final class PictureOfTheDaySearchByDate extends PictureOfTheDayState {
-  const PictureOfTheDaySearchByDate({
+final class PictureOfTheDaySearch extends PictureOfTheDayState {
+  const PictureOfTheDaySearch({
     required this.pictures,
   });
 

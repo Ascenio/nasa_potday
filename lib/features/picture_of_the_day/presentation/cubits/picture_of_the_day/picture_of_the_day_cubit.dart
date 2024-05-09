@@ -52,7 +52,7 @@ class PictureOfTheDayCubit extends Cubit<PictureOfTheDayState> {
     emit(const PictureOfTheDayLoading());
     final pictures = await _nasaRepository.searchByText(text);
     emit(
-      PictureOfTheDaySearchByText(
+      PictureOfTheDaySearch(
         pictures: pictures,
       ),
     );
@@ -62,7 +62,7 @@ class PictureOfTheDayCubit extends Cubit<PictureOfTheDayState> {
     emit(const PictureOfTheDayLoading());
     final pictures = await _nasaRepository.searchByDate(date);
     emit(
-      PictureOfTheDaySearchByDate(
+      PictureOfTheDaySearch(
         pictures: pictures,
       ),
     );

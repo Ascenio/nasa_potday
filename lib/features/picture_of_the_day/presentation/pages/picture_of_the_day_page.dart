@@ -77,17 +77,15 @@ class _PictureOfTheDayPageState extends State<PictureOfTheDayPage> {
             PictureOfTheDayFailed() => TryAgainWidget(
                 onTryAgainPressed: refresh,
               ),
-            PictureOfTheDaySearchByText(:final pictures) ||
-            PictureOfTheDaySearchByDate(:final pictures) =>
-              pictures.isEmpty
-                  ? const NotFoundWidget()
-                  : ListView.separated(
-                      itemBuilder: (_, index) {
-                        return PictureWidget(picture: pictures[index]);
-                      },
-                      itemCount: pictures.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 32),
-                    ),
+            PictureOfTheDaySearch() => state.pictures.isEmpty
+                ? const NotFoundWidget()
+                : ListView.separated(
+                    itemBuilder: (_, index) {
+                      return PictureWidget(picture: state.pictures[index]);
+                    },
+                    itemCount: state.pictures.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 32),
+                  ),
           };
         },
       ),

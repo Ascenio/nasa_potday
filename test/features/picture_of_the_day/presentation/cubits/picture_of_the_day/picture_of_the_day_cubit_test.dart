@@ -128,7 +128,7 @@ void main() {
     act: (cubit) => cubit.searchByText('Some'),
     expect: () => <PictureOfTheDayState>[
       const PictureOfTheDayLoading(),
-      PictureOfTheDaySearchByText(pictures: [picture]),
+      PictureOfTheDaySearch(pictures: [picture]),
     ],
   );
 
@@ -144,7 +144,7 @@ void main() {
     act: (cubit) => cubit.searchByDate(DateTime(2024, DateTime.may, 8)),
     expect: () => <PictureOfTheDayState>[
       const PictureOfTheDayLoading(),
-      PictureOfTheDaySearchByText(pictures: [picture]),
+      PictureOfTheDaySearch(pictures: [picture]),
     ],
   );
 }

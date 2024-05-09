@@ -76,24 +76,12 @@ void main() {
     expect(find.byType(ListView), findsOne);
   });
 
-  testWidgets('should display NotFoundWidget when text search has no results',
+  testWidgets('should display NotFoundWidget when search has no results',
       (tester) async {
     when(() => cubit.loadPictureOfTheDay()).thenAnswer((_) async {});
     await setupPage(tester: tester, states: [
       const PictureOfTheDayLoading(),
-      const PictureOfTheDaySearchByText(pictures: []),
-    ]);
-    await tester.pump();
-    expect(find.byType(ListView), findsNothing);
-    expect(find.byType(NotFoundWidget), findsOne);
-  });
-
-  testWidgets('should display NotFoundWidget when date search has no results',
-      (tester) async {
-    when(() => cubit.loadPictureOfTheDay()).thenAnswer((_) async {});
-    await setupPage(tester: tester, states: [
-      const PictureOfTheDayLoading(),
-      const PictureOfTheDaySearchByDate(pictures: []),
+      const PictureOfTheDaySearch(pictures: []),
     ]);
     await tester.pump();
     expect(find.byType(ListView), findsNothing);
