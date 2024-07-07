@@ -41,3 +41,29 @@ jobs:
           flutter-version: 3.19.4
       - name: Run tests
         run: flutter test
+
+  building-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.19.4
+      - name: Generates appbundle
+        run: flutter build appbundle
+
+  building-ios:
+    runs-on: macos-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.19.4
+      - name: Generates appbundle
+        run: flutter build ios --no-codesign
