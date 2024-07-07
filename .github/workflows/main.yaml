@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   linting:
+    runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
