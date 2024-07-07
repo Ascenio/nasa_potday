@@ -79,6 +79,7 @@ jobs:
       - name: Uploads appbundle
         uses: actions/upload-artifact@v4
         with:
+          name: appbundle
           path: build/app/outputs/bundle/release/app-release.aab
 
   building-ios:
@@ -96,4 +97,5 @@ jobs:
       - name: Uploads ipa
         uses: actions/upload-artifact@v4
         with:
+          name: ipa
           path: build/ios/archive/Runner.xcarchive/
