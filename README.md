@@ -13,6 +13,7 @@ Contains some goodies such as:
 - Offline-first
 - Caching
 - API keys via environment variables
+- CI with [GitHub Actions](https://docs.github.com/en/actions)
 
 https://github.com/Ascenio/nasa_potday/assets/7662016/079d3cba-9222-4d96-b690-bb01a0bb32a9
 
