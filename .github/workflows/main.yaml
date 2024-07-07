@@ -57,7 +57,8 @@ jobs:
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: printenv ENV_FILE > env.json
-      - uses: futureware-tech/simulator-action@v3
+      - name: Set up simulator
+        uses: futureware-tech/simulator-action@v3
         with:
           model: "iPhone 15"
       - name: Run tests
