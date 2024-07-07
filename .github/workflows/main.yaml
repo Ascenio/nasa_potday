@@ -72,5 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create .env file
+        env:
+          HELLO: ${{ env.HELLO }}
         run: printenv HELLO > env.json
       - run: cat env.json
