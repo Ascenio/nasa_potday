@@ -70,9 +70,10 @@ jobs:
 
   test-env:
     runs-on: ubuntu-latest
+    environment: Main
     steps:
-      - name: Create .env file
+      - name: Create env file
         env:
-          HELLO: ${{ env.HELLO }}
-        run: printenv HELLO > env.json
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: printenv ENV_FILE > env.json
       - run: cat env.json
