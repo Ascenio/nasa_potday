@@ -42,6 +42,27 @@ jobs:
       - name: Run tests
         run: flutter test
 
+  integration-testing:
+    runs-on: macos-latest
+    environment: Main
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.19.4
+      - name: Create env file
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: printenv ENV_FILE > env.json
+      - uses: futureware-tech/simulator-action@v3
+        with:
+          model: "iPhone 15"
+      - name: Run tests
+        run: flutter test integration_test
+
   building-android:
     runs-on: ubuntu-latest
     steps:
@@ -67,13 +88,3 @@ jobs:
           flutter-version: 3.19.4
       - name: Generates appbundle
         run: flutter build ios --no-codesign
-
-  test-env:
-    runs-on: ubuntu-latest
-    environment: Main
-    steps:
-      - name: Create env file
-        env:
-          ENV_FILE: ${{ secrets.ENV_FILE }}
-        run: printenv ENV_FILE > env.json
-      - run: cat env.json
