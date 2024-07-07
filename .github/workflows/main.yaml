@@ -75,5 +75,5 @@ jobs:
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
           TEST: hello
-        run: printenv ENV_FILE > env.json
+        run: printenv TEST > env.json
       - run: cat env.json
