@@ -20,5 +20,14 @@
                 "--dart-define-from-file=env.json"
             ]
         },
+        {
+            "name": "integration test",
+            "request": "launch",
+            "type": "dart",
+            "program": "integration_test/picture_of_the_day_test.dart",
+            "args": [
+                "--dart-define-from-file=env.json",
+            ]
+        },
     ]
 }
