@@ -67,3 +67,11 @@ jobs:
           flutter-version: 3.19.4
       - name: Generates appbundle
         run: flutter build ios --no-codesign
+
+  test-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create .env file
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: echo "${{ env.ENV_FILE }}" > .env
