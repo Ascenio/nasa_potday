@@ -72,8 +72,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create .env file
-        env:
-          ENV_FILE: ${{ secrets.ENV_FILE }}
-          TEST: hello
-        run: printenv TEST > env.json
-      - run: cat env.json
+        run: printenv HELLO > env.json
+      - run: env.json
