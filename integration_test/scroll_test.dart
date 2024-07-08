@@ -16,6 +16,6 @@ void main() {
       scrollable: find.byType(Scrollable),
     );
     await tester.pumpAndSettle();
-    expectListViewHasNItems(tester: tester, itemCount: 14);
+    expectListViewSeparatedHasNItems(tester: tester, itemCount: 14);
   });
 }
