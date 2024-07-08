@@ -36,7 +36,7 @@ void main() {
   testWidgets('should display 7 pictures per page', (tester) async {
     await tester.pumpWidget(const MainApp());
     await tester.pumpAndSettle();
-    expectListViewHasNItems(tester: tester, itemCount: 7);
+    expectListViewSeparatedHasNItems(tester: tester, itemCount: 7);
   });
 
   testWidgets('should search by date', (tester) async {
@@ -50,7 +50,7 @@ void main() {
     expect(find.byType(PictureWidget), findsOne);
     await tester.tap(find.byIcon(Icons.chevron_left));
     await tester.pumpAndSettle();
-    expectListViewHasNItems(tester: tester, itemCount: 7);
+    expectListViewSeparatedHasNItems(tester: tester, itemCount: 7);
   });
 
   testWidgets(

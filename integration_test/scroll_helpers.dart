@@ -15,7 +15,7 @@ int listViewChildCount({
   return listView.childrenDelegate.estimatedChildCount!;
 }
 
-void expectListViewHasNItems({
+void expectListViewSeparatedHasNItems({
   required WidgetTester tester,
   required int itemCount,
 }) {
