@@ -34,15 +34,16 @@ class ImageOrVideoWidget extends StatelessWidget {
               fit: BoxFit.cover,
               errorWidget: (context, url, error) => ColoredBox(
                 color: surfaceColor,
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.error_outline,
                       size: 64,
+                      color: isVideo ? Colors.transparent : null,
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       'Could not show the image',
                     )
                   ],
