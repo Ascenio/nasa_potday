@@ -61,6 +61,7 @@ jobs:
         uses: futureware-tech/simulator-action@v3
         with:
           model: "iPhone 15"
+          os: iOS
       - name: Run tests
         run: flutter test integration_test --dart-define-from-file=env.json
 
